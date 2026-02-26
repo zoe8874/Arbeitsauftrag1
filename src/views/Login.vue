@@ -4,14 +4,14 @@
       <h1>Login</h1>
     </div>
 
-    <form @submit.prevent="handleSubmit" class="contact-form">
+    <form @submit.prevent="handleSubmit" class="Login-form">
       <div class="form-group">
-        <label>Username *</label>
+        <label>Username </label>
         <input type="text" v-model="formData.username" required />
       </div>
 
       <div class="form-group">
-        <label>Passwort *</label>
+        <label>Passwort </label>
         <input type="password" v-model="formData.password" required />
       </div>
 
@@ -95,11 +95,35 @@ const handleSubmit = async () => {
 
 
 <style scoped>
+.Login-form{
+  max-width :70%;
+  min-width: 200px;
+  margin :10px auto;
+  padding: 5%;
+  background-color: #4f6448;
+  border-radius: 8px;
 
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+.form-group {
+margin-top: 1rem;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 20px;
+ 
+}
 
 .contact-header {
   text-align: center;
-  margin-bottom: 3rem;
+  
 }
 
 .contact-header h1 {
@@ -113,7 +137,12 @@ const handleSubmit = async () => {
   font-size: 1.1rem;
 }
 
-
+label {
+  color: #2f3a2f;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
 
 .contact-content {
   display: grid;
@@ -121,86 +150,25 @@ const handleSubmit = async () => {
   gap: 3rem;
 }
 
-@media (min-width: 768px) {
-  .contact-content {
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-  }
-}
-
-
-
-.contact-info {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 576px) {
-  .contact-info {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-.form-group input[type="email"],
-.form-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #cfd8c0;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-  box-sizing: border-box;
-  background-color: #ffffff;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #6a7f62;
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 120px;
-  font-family: inherit;
-}
-
-
-
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.checkbox-group label {
-  cursor: pointer;
-  user-select: none;
-}
-
-
-
 .submit-button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #4f6448;
-  color: #ffffff;
+  background-color: #2f3a2f;
+  color: white;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 8px;
-  
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(14, 16, 15, 0.683);
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

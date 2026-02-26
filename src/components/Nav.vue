@@ -10,7 +10,10 @@
         
         <ul class="nav-links" id="navLinks">
             <li><router-link to="/">Startseite</router-link></li>
-              <li><router-link to="/Login">Login</router-link></li>
+              
+                <li><router-link to="/register">Registrieren</router-link></li>
+                 <li><router-link to="/Produkt">Produkt</router-link></li>
+                    <li><router-link to="/Login">Login</router-link></li>
            
             
         </ul>
