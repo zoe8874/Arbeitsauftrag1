@@ -74,7 +74,7 @@ const handleSubmit = async () => {
  
     localStorage.setItem("user", JSON.stringify(data));
     isLoggedIn.value = true;
-    router.push("/Produkt");
+    router.push("/");
 
   } catch (err) {
     error.value = "Server Fehler. Bitte später erneut versuchen.";
