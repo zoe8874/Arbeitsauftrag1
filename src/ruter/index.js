@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/Login.vue'
 import StartView from '../views/StartView.vue'
 import RegisterView from '../views/Regristriren.vue'
-import ProduktView from '../views/Produkt.vue'
 
 
 const routes = [
@@ -21,12 +20,7 @@ const routes = [
     name: 'Register',
     component: RegisterView
   },
-  {
-    path: '/produkt',
-    name: 'Produkt',
-    component: ProduktView
-  }
-
+  
 ]
 
 const router = createRouter({
