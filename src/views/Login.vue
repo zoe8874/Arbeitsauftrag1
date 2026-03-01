@@ -6,16 +6,16 @@
 
     <form @submit.prevent="handleSubmit" class="Login-form">
       <div class="form-group">
-        <label>Username </label>
+        <label>Username</label>
         <input type="text" v-model="formData.username" required />
       </div>
 
       <div class="form-group">
-        <label>Passwort </label>
+        <label>Passwort</label>
         <input type="password" v-model="formData.password" required />
       </div>
 
-      <button type="submit" class="submit-button">
+      <button type="submit" class="submit-button" :disabled="submitting">
         {{ submitting ? "Wird eingeloggt..." : "Login" }}
       </button>
 
@@ -26,12 +26,10 @@
   </div>
 </template>
 
-
-
-
 <script setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+
 
 const router = useRouter();
 
@@ -53,7 +51,7 @@ const handleSubmit = async () => {
 
   submitting.value = true;
   error.value = "";
- 
+
   try {
     const response = await fetch(
       "https://ipt71.kuno-schuerch.bbzwinf.ch/user/login",
@@ -62,115 +60,125 @@ const handleSubmit = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: formData.username,
-          password: formData.password,
-        }),
+        body: JSON.stringify(formData),
       }
     );
 
     const data = await response.json();
 
-    if (!response.ok || !data.token) {
-      throw new Error("Login fehlgeschlagen");
+    if (!data.success) {
+      error.value = "Login fehlgeschlagen. Benutzername oder Passwort falsch.";
+      return;
     }
 
-    localStorage.setItem("token", data.token);
+    
+    localStorage.setItem("user", JSON.stringify(data));
 
-    router.push("/");
+    router.push("/Produkt");
   } catch (err) {
-    error.value =
-      "Login fehlgeschlagen. Benutzername oder Passwort falsch.";
+    error.value = "Server Fehler. Bitte später erneut versuchen.";
   } finally {
     submitting.value = false;
   }
 };
 </script>
 
-
-
-
-
-
-
-
 <style scoped>
-.Login-form{
-  max-width :70%;
-  min-width: 200px;
-  margin :10px auto;
-  padding: 5%;
-  background-color: #4f6448;
-  border-radius: 8px;
-
-}
-
-input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-}
-
-.form-group {
-margin-top: 1rem;
-  padding: 10px;
-  margin-bottom: 1rem;
-  border-radius: 20px;
- 
+.contact-container {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 
 .contact-header {
   text-align: center;
-  
+  margin-bottom: 2rem;
 }
 
 .contact-header h1 {
   color: #2f3a2f;
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0;
 }
 
-.contact-subtitle {
-  color: #4f5b4a;
-  font-size: 1.1rem;
+.Login-form {
+  width: 100%;
+  max-width: 400px;
+  background-color: #4f6448;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
 label {
-  color: #2f3a2f;
+  color: white;
   font-weight: bold;
   display: block;
   margin-bottom: 0.5rem;
 }
 
-.contact-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 3rem;
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 25px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #2f3a2f;
+  box-shadow: 0 0 0 3px rgba(47, 58, 47, 0.2);
 }
 
 .submit-button {
+  width: 100%;
   background-color: #2f3a2f;
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(14, 16, 15, 0.683);
+  transition: all 0.3s ease;
 }
 
+.submit-button:hover:not(:disabled) {
+  background-color: #3f4f3f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
 
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
+.error-message {
+  color: #ff6b6b;
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
 
-
-
-
-
-
-
-
-
-
-
+@media (max-width: 768px) {
+  .contact-header h1 {
+    font-size: 2rem;
+  }
+  
+  .Login-form {
+    padding: 1.5rem;
+  }
+}
 </style>

@@ -6,27 +6,27 @@
 
     <form @submit.prevent="handleRegister" class="Login-form">
       <div class="form-group">
-        <label>Username </label>
+        <label>Username</label>
         <input v-model="formData.username" required />
       </div>
 
       <div class="form-group">
-        <label>Vorname </label>
+        <label>Vorname</label>
         <input v-model="formData.firstname" required />
       </div>
 
       <div class="form-group">
-        <label>Nachname </label>
+        <label>Nachname</label>
         <input v-model="formData.lastname" required />
       </div>
 
       <div class="form-group">
-        <label>Passwort </label>
+        <label>Passwort</label>
         <input type="password" v-model="formData.password" required />
       </div>
 
       <div class="form-group">
-        <label>Sprache </label>
+        <label>Sprache</label>
         <select v-model="formData.language" required>
           <option value="de">Deutsch</option>
           <option value="en">English</option>
@@ -38,7 +38,10 @@
         {{ submitting ? "Wird registriert..." : "Register" }}
       </button>
 
-      <p v-if="message" :style="{ color: success ? 'green' : 'red', marginTop: '1rem' }">
+      <p
+        v-if="message"
+        :style="{ color: success ? 'green' : 'red', marginTop: '1rem' }"
+      >
         {{ message }}
       </p>
     </form>
@@ -63,6 +66,28 @@ const submitting = ref(false);
 const message = ref("");
 const success = ref(false);
 
+const getErrorMessage = (reason) => {
+  switch (reason) {
+    case "username_not_valid":
+      return "Username ist ungültig.";
+
+    case "username_already_exists":
+      return "Username existiert bereits.";
+
+    case "password_not_valid":
+      return "Passwort ist ungültig.";
+
+    case "firstname_not_valid":
+      return "Vorname ist ungültig.";
+
+    case "lastname_not_valid":
+      return "Nachname ist ungültig.";
+
+    default:
+      return "Registration fehlgeschlagen.";
+  }
+};
+
 const handleRegister = async () => {
   if (submitting.value) return;
 
@@ -83,8 +108,10 @@ const handleRegister = async () => {
 
     const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.message || "Register fehlgeschlagen");
+    if (!data.success) {
+      success.value = false;
+      message.value = getErrorMessage(data.reason);
+      return;
     }
 
     success.value = true;
@@ -93,9 +120,10 @@ const handleRegister = async () => {
     setTimeout(() => {
       router.push("/login");
     }, 1500);
+
   } catch (error) {
     success.value = false;
-    message.value = "Registration fehlgeschlagen.";
+    message.value = "Server Fehler. Bitte später erneut versuchen.";
   } finally {
     submitting.value = false;
   }
@@ -104,17 +132,13 @@ const handleRegister = async () => {
 
 
 <style scoped>
-
-
-
-.Login-form{
-  max-width :70%;
+.Login-form {
+  max-width: 70%;
   min-width: 200px;
-  margin :10px auto;
+  margin: 10px auto;
   padding: 5%;
   background-color: #4f6448;
   border-radius: 8px;
-
 }
 
 input {
@@ -126,16 +150,14 @@ input {
 }
 
 .form-group {
-margin-top: 1rem;
+  margin-top: 1rem;
   padding: 10px;
   margin-bottom: 1rem;
   border-radius: 20px;
- 
 }
 
 .contact-header {
   text-align: center;
-  
 }
 
 .contact-header h1 {
@@ -144,22 +166,11 @@ margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
-.contact-subtitle {
-  color: #4f5b4a;
-  font-size: 1.1rem;
-}
-
 label {
   color: #2f3a2f;
   font-weight: bold;
   display: block;
   margin-bottom: 0.5rem;
-}
-
-.contact-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 3rem;
 }
 
 .submit-button {
@@ -172,24 +183,11 @@ label {
   box-shadow: 0 4px 8px rgba(14, 16, 15, 0.683);
 }
 
-select{
-   width: 100%;
+select {
+  width: 100%;
   padding: 0.5rem;
   margin-top: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 20px;
-   
-  
 }
-
-option {
-  padding: 0.5rem;}
-
-
-
-
-
-
-
-
 </style>

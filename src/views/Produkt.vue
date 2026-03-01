@@ -21,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <div class="shop-container">
-    <h1>Online Buchshop</h1>
+    
 
     <p v-if="loading">Lade Produkte...</p>
     <p v-if="error">{{ error }}</p>
@@ -49,8 +49,6 @@ onMounted(async () => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  display: flex;
-  flex-direction: wrap-reverse;
 }
 
 .produkte {
@@ -58,20 +56,37 @@ onMounted(async () => {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
 }
-img {
-  width: 50%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 4px;
-}
 
 .produkt {
-  border: 1px solid #ccc;
+  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.produkt img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.produkt h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.produkt p {
+  margin: 0.25rem 0;
+  color: #666;
 }
 
 .preis {
   font-weight: bold;
+  color: #2c3e50;
+  margin-top: 0.5rem;
+  text-align: right;
 }
 </style>
