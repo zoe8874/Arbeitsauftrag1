@@ -17,6 +17,7 @@ function handleLogout() {
       <li><router-link to="/">Startseite</router-link></li>
        <li v-if="!isLoggedIn"><router-link to="/register">Registrieren</router-link></li>
       <li><router-link to="/Produkt">Produkt</router-link></li>
+      <li><a href="https://disclaimer.bbzwinf.ch/" target="_blank">Disclaimer</a></li>
 
       <li v-if="!isLoggedIn">
         <router-link to="/Login">Login</router-link>

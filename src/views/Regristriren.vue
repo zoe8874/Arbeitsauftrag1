@@ -71,17 +71,15 @@ const getErrorMessage = (reason) => {
     case "username_not_valid":
       return "Username ist ungültig.";
 
-    case "username_already_exists":
-      return "Username existiert bereits.";
 
-    case "password_not_valid":
-      return "Passwort ist ungültig.";
+    case "password_too_short":
+      return "Passwort ist zu kurz.";
 
-    case "firstname_not_valid":
-      return "Vorname ist ungültig.";
+    case "firstname_too_short":
+      return "Vorname ist zu kurz.";
 
-    case "lastname_not_valid":
-      return "Nachname ist ungültig.";
+    case "lastname_too_short":
+      return "Nachname ist zu kurz.";
 
     default:
       return "Registration fehlgeschlagen.";
