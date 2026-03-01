@@ -32,23 +32,25 @@
 
 <script setup>
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { isLoggedIn } from "./auth";
+
+const router = useRouter();
 
 const formData = reactive({
   username: "",
-    password: "",
-   
+  password: "",
 });
 
 const submitting = ref(false);
 const error = ref("");
 const success = ref(false);
-const showSuccessModal = ref(false);
 
 const handleSubmit = async () => {
   if (submitting.value) return;
 
-  if (!formData.name || !formData.email || !formData.message) {
-    error.value = "Bitte alle Pflichtfelder ausfüllen.";
+  if (!formData.username || !formData.password) {
+    error.value = "Bitte Username und Passwort eingeben.";
     return;
   }
 
@@ -56,43 +58,40 @@ const handleSubmit = async () => {
   error.value = "";
 
   try {
-    const response = await fetch("https://ipt71.kuno-schuerch.bbzwinf.ch/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        username: formData.username,
-        password: formData.password,
-        
-      })
-    });
+    const response = await fetch(
+      "https://ipt71.kuno-schuerch.bbzwinf.ch/user/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
-    if (!response.ok) throw new Error("Serverfehler");
+    const data = await response.json();
+
+    if (!data.success) {
+      error.value = "Login fehlgeschlagen. Benutzername oder Passwort falsch.";
+      return;
+    }
+
+    
+    localStorage.setItem("user", JSON.stringify(data));
+
+ 
+    isLoggedIn.value = true;
 
     success.value = true;
-    showSuccessModal.value = true;
+
+    
+    router.push("/");
+    
   } catch (err) {
-    error.value = "Fehler beim Senden. Bitte später erneut versuchen.";
+    error.value = "Server Fehler. Bitte später erneut versuchen.";
   } finally {
     submitting.value = false;
   }
-};
-
-const closeModal = () => {
-  showSuccessModal.value = false;
-  resetForm();
-};
-
-const sendAnother = () => {
-  showSuccessModal.value = false;
-  resetForm();
-};
-
-const resetForm = () => {
-  formData.username = "";
-  formData.password = "";
- 
 };
 </script>
 

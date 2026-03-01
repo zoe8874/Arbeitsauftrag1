@@ -29,7 +29,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-
+import { isLoggedIn } from "../auth";
 
 const router = useRouter();
 
@@ -71,10 +71,11 @@ const handleSubmit = async () => {
       return;
     }
 
-    
+ 
     localStorage.setItem("user", JSON.stringify(data));
-
+    isLoggedIn.value = true;
     router.push("/Produkt");
+
   } catch (err) {
     error.value = "Server Fehler. Bitte später erneut versuchen.";
   } finally {
